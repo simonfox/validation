@@ -101,7 +101,7 @@ export class StandardValidator extends Validator {
       const rule = rules[i];
 
       // is the rule related to the property we're validating.
-      if (!validateAllProperties && rule.property.name !== propertyName) {
+      if (!validateAllProperties && rule.property.name !== propertyName && !rule.property.alsoTriggeredBy.some(x => x.name === (propertyName || ''))) {
         continue;
       }
 
@@ -110,6 +110,7 @@ export class StandardValidator extends Validator {
         continue;
       }
 
+      
       // validate.
       const value = rule.property.name === null ? object : object[rule.property.name];
       let promiseOrBoolean = rule.condition(value, object);

@@ -26,7 +26,7 @@ export class FluentRuleCustomizer<TObject, TValue> {
       when: null,
       messageKey: 'default',
       message: null,
-      sequence: fluentRules.sequence
+      sequence: fluentRules.sequence,
     };
     this.fluentEnsure._addRule(this.rule);
   }
@@ -221,6 +221,16 @@ export class FluentRules<TObject, TValue> {
     private property: RuleProperty
   ) { }
 
+  public alsoTriggeredBy<TValue>(triggeredBy: string[] | PropertyAccessor<TObject, TValue>[]) {
+    let triggeredByProperties = [];
+    for(let property of triggeredBy) {
+      triggeredByProperties.push(this.parser.parseProperty(property));
+    }
+    this.property.alsoTriggeredBy = triggeredByProperties;
+
+    return this;
+  }
+
   /**
    * Sets the display name of the ensured property.
    */
@@ -375,7 +385,7 @@ export class FluentEnsure<TObject> {
   public ensureObject() {
     this.assertInitialized();
     return new FluentRules<TObject, TObject>(
-      this, this.parser, { name: null, displayName: null });
+      this, this.parser, { name: null, displayName: null, alsoTriggeredBy: [] });
   }
 
   /**

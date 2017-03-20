@@ -15,6 +15,8 @@ export interface RuleProperty {
    * The displayName of the property (or object).
    */
   displayName: string | ValidationDisplayNameAccessor | null;
+
+  alsoTriggeredBy: RuleProperty[];
 }
 
 /**

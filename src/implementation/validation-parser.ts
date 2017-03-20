@@ -59,14 +59,15 @@ export class ValidationParser {
 
   public parseProperty<TObject, TValue>(property: string | PropertyAccessor<TObject, TValue>): RuleProperty {
     if (isString(property)) {
-      return { name: property as string, displayName: null };
+      return { name: property as string, displayName: null, alsoTriggeredBy: [] };
     }
     const accessor = this.getAccessorExpression(property.toString());
     if (accessor instanceof AccessScope
       || accessor instanceof AccessMember && accessor.object instanceof AccessScope) {
       return {
         name: accessor.name,
-        displayName: null
+        displayName: null,
+        alsoTriggeredBy: []
       };
     }
     throw new Error(`Invalid subject: "${accessor}"`);
